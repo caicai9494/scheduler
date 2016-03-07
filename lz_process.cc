@@ -10,18 +10,22 @@ Process::Process(unsigned pid,
   d_pid(pid), d_duration(duration), 
   d_startTime(startTime), d_state(State::Ready) {}
 
-unsigned Process::run(unsigned quantum)
+bool Process::run(unsigned *runtime, unsigned quantum)
 {
+    assert(runtime != nullptr);
     assert(quantum > 0);
-    assert(d_state == State::Ready);
+    assert(d_state != State::Done);
 
     if (quantum >= d_duration) {
 	d_state = State::Done;
-	return d_duration;
+	*runtime = d_duration;
+	return true;
     }	
     else {
+	d_state = State::Running;
 	d_duration -= quantum;
-	return quantum;
+	*runtime = quantum;
+	return false;
     }
 }
 

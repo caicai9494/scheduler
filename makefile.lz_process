@@ -1,0 +1,17 @@
+CC=g++ 
+
+LIBS=
+LIBS_INC=.
+
+TSK=lz_process.tsk
+SRC=lz_process.t.cc lz_process.cc
+
+PTHREAD_ENABLED=#-pthread
+
+CPPFLAGS=$(LIBS_INC:%=-I%) $(LIBS:%=-L%) -g -std=c++11 $(PTHREAD_ENABLED)
+
+all:
+	$(CC) $(CPPFLAGS) -o $(TSK) $(SRC)
+
+clean:
+	rm -f *.o $(TSK)

@@ -11,7 +11,7 @@ class Process {
 	    unsigned duration, 
 	    unsigned startTime); 
 
-    enum class State { Done, Ready }
+    enum class State { Running, Done, Ready };
 
     unsigned pid() const { return d_pid; }
     unsigned duration() const { return d_duration; }
@@ -19,8 +19,9 @@ class Process {
 
     State state() const { return d_state; }
 
-    unsigned run(unsigned quantum);
-        // Return actual running time
+    bool run(unsigned *runtime, unsigned quantum);
+        // Set actual running time and return whether
+	// the process is ended
 
   private:
     unsigned d_pid;
