@@ -12,21 +12,30 @@ class RoundRobin : public IScheduler {
   public:
 
     typedef std::list<Process*> PList;
+    typedef PList::iterator PListIt;
 
     RoundRobin();
-
-    ~RoundRobin() {}
 
     void add(Process *prc) override;
 
     bool run(unsigned *runtime, unsigned quantum) override;
 
+    bool empty() const override;
+
   private:
 
     PList d_activeList;
-    PList::iterator d_it;
+    PListIt d_it;
+
+    PListIt getNext();
+    void removeCurrent();
+
+
 
 };
+
+inline
+bool RoundRobin::empty() const { return d_activeList.empty(); }
 
 } // close namespace
 

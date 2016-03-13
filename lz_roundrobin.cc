@@ -5,7 +5,7 @@
 namespace LZ {
 
 RoundRobin::RoundRobin() : 
-  d_it(d_activeList.begin()) {}
+  d_it(d_activeList.end()) {}
 
 void RoundRobin::add(Process *prc) 
 {
@@ -30,6 +30,21 @@ bool RoundRobin::run(unsigned *runtime, unsigned quantum)
     unsigned runtime = 0;
     const bool ret = d_it->run(&runtime, quantum);
     
+}
+
+PListIt RoundRobin::getNext()
+{
+    if (empty()) {
+	return d_activeList.end()
+    }
+
+    if (d_it == d_activeList.end()) {
+	
+    }
+}
+
+void RoundRobin::removeCurrent()
+{
 }
 
 } // close namespace
