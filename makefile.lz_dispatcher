@@ -3,8 +3,8 @@ CC=g++
 LIBS=
 LIBS_INC=.
 
-TSK=lz_roundrobin.tsk
-SRC=lz_roundrobin.t.cc lz_process.cc lz_roundrobin.cc
+TSK=lz_dispatcher.tsk
+SRC=lz_process.cc lz_dispatcher.cc lz_dispatcher.t.cc
 
 PTHREAD_ENABLED=#-pthread
 

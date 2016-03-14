@@ -1,6 +1,7 @@
 #include <lz_roundrobin.h>
 
 #include <cassert>
+#include <cstddef>
 
 namespace LZ {
 
@@ -16,6 +17,7 @@ void RoundRobin::add(Process *prc)
 
 bool RoundRobin::run(unsigned *runtime, unsigned quantum) 
 {
+    /*
     assert(0 != quantum);
 
     if (d_activeList.empty()) {
@@ -27,19 +29,27 @@ bool RoundRobin::run(unsigned *runtime, unsigned quantum)
 	d_it = d_activeList.begin();
     }
 
-    unsigned runtime = 0;
-    const bool ret = d_it->run(&runtime, quantum);
-    
+    unsigned rtm = 0;
+    */
+    return false;
 }
 
-PListIt RoundRobin::getNext()
+RoundRobin::PListIt RoundRobin::getNext()
 {
     if (empty()) {
-	return d_activeList.end()
+	return d_activeList.end();
     }
 
-    if (d_it == d_activeList.end()) {
-	
+    if (d_activeList.end() == d_it) {
+	d_it = d_activeList.begin();
+	return d_it;
+    }
+    else {
+	PListIt& next = ++d_it;
+	if (d_activeList.end() == next) {
+	    return ++d_it;
+	}
+	return d_it;
     }
 }
 

@@ -1,4 +1,3 @@
-#include <lz_roundrobin.h> 
 #include <algorithm>
 #include <bitset>
 #include <iostream>
@@ -14,22 +13,23 @@
 #include <vector>
 
 #include <lz_error.h>
+#include <lz_roundrobin.h> 
 
 int main()
 {
-    std::list<int> lst;
-    lst.push_back(1);
-    lst.push_back(2);
-    lst.push_back(3);
+    using namespace LZ;
+    RoundRobin rr;
+    Process p1(1, 10, 2);
+    Process p2(2, 110, 2);
+    Process p3(3, 1110, 2);
+    rr.add(&p1);
+    rr.add(&p2);
+    rr.add(&p3);
 
-    for (auto it = lst.begin(); ; ++it) {
-	if (it == lst.end()) {
-	    it = lst.begin();
-	}
-	std::cout << *it << '\n';
-    }
-
-    //ASSERT_EQ(1, 1);
+    ASSERT_EQ((*rr.getNext())->pid(), 1);
+    ASSERT_EQ((*rr.getNext())->pid(), 2);
+    ASSERT_EQ((*rr.getNext())->pid(), 3);
+    ASSERT_EQ((*rr.getNext())->pid(), 1);
     //ASSERT_TRUE("123" == "1231");
 
     //int A[] = {5, 7, 7, 8, 8, 10};

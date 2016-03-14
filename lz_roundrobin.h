@@ -22,13 +22,14 @@ class RoundRobin : public IScheduler {
 
     bool empty() const override;
 
+    PListIt getNext();
+    void removeCurrent();
+
   private:
 
     PList d_activeList;
     PListIt d_it;
 
-    PListIt getNext();
-    void removeCurrent();
 
 
 
