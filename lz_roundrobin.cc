@@ -11,50 +11,37 @@ RoundRobin::RoundRobin() :
 void RoundRobin::add(Process *prc) 
 {
     assert(NULL != prc);
-
     d_activeList.push_back(prc);
 }
 
-bool RoundRobin::run(unsigned *runtime, unsigned quantum) 
+Process* RoundRobin::next()
 {
-    /*
-    assert(0 != quantum);
-
-    if (d_activeList.empty()) {
-	*runtime = 0;
-	return false;
+    if (empty()) {
+	return NULL;
     }
 
     if (d_it == d_activeList.end()) {
-	d_it = d_activeList.begin();
+	++d_it;
     }
-
-    unsigned rtm = 0;
-    */
-    return false;
-}
-
-RoundRobin::PListIt RoundRobin::getNext()
-{
-    if (empty()) {
-	return d_activeList.end();
-    }
-
-    if (d_activeList.end() == d_it) {
-	d_it = d_activeList.begin();
-	return d_it;
-    }
-    else {
-	PListIt& next = ++d_it;
-	if (d_activeList.end() == next) {
-	    return ++d_it;
-	}
-	return d_it;
-    }
+    return *(d_it++);
 }
 
 void RoundRobin::removeCurrent()
 {
+    if (empty()) {
+	return;
+    }
+
+    // d_it points to end
+    // we erase next item
+    if (d_it == d_activeList.end()) {
+	++d_it;
+    }
+
+    auto cpy = d_it;
+    ++cpy;
+    d_activeList.erase(d_it);
+    d_it = cpy;
 }
 
 } // close namespace

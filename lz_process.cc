@@ -17,6 +17,7 @@ bool Process::run(unsigned *runtime, unsigned quantum)
 
     if (quantum >= d_duration) {
 	*runtime = d_duration;
+	d_duration = 0;
 	return true;
     }	
     else {

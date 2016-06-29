@@ -17,23 +17,161 @@
 
 int main()
 {
-    using namespace LZ;
-    RoundRobin rr;
-    Process p1(1, 10, 2);
-    Process p2(2, 110, 2);
-    Process p3(3, 1110, 2);
-    rr.add(&p1);
-    rr.add(&p2);
-    rr.add(&p3);
+    // add and then call next;
+    {
+	using namespace LZ;
+	RoundRobin rr;
+	Process p1(1, 10, 2);
+	Process p2(2, 110, 2);
+	Process p3(3, 1110, 2);
+	rr.add(&p1);
+	rr.add(&p2);
+	rr.add(&p3);
 
-    ASSERT_EQ((*rr.getNext())->pid(), 1);
-    ASSERT_EQ((*rr.getNext())->pid(), 2);
-    ASSERT_EQ((*rr.getNext())->pid(), 3);
-    ASSERT_EQ((*rr.getNext())->pid(), 1);
-    //ASSERT_TRUE("123" == "1231");
+	ASSERT_EQ(rr.next()->pid(), 1);
+	ASSERT_EQ(rr.next()->pid(), 2);
+	ASSERT_EQ(rr.next()->pid(), 3);
+	ASSERT_EQ(rr.next()->pid(), 1);
+	ASSERT_EQ(rr.next()->pid(), 2);
+    }
 
-    //int A[] = {5, 7, 7, 8, 8, 10};
-    //vector<int> num = {4, 5, 6, 7 , 8, 0, 1, 2};
-    //cout << s. << endl;
+    // add, call next and remove;
+    {
+	using namespace LZ;
+	RoundRobin rr;
+	Process p1(1, 10, 2);
+	Process p2(2, 110, 2);
+	Process p3(3, 1110, 2);
+	rr.add(&p1);
+	rr.add(&p2);
+	rr.add(&p3);
+
+	ASSERT_EQ(rr.next()->pid(), 1);
+	ASSERT_EQ(rr.next()->pid(), 2);
+	rr.removeCurrent();
+	ASSERT_EQ(rr.next()->pid(), 1);
+	ASSERT_EQ(rr.next()->pid(), 2);
+	ASSERT_EQ(rr.next()->pid(), 1);
+    }
+
+    // add, call next and remove 2;
+    {
+	using namespace LZ;
+	RoundRobin rr;
+	Process p1(1, 10, 2);
+	Process p2(2, 110, 2);
+	Process p3(3, 1110, 2);
+	rr.add(&p1);
+	rr.add(&p2);
+	rr.add(&p3);
+
+	ASSERT_EQ(rr.next()->pid(), 1);
+	ASSERT_EQ(rr.next()->pid(), 2);
+	rr.removeCurrent();
+	ASSERT_EQ(rr.next()->pid(), 1);
+	rr.removeCurrent();
+	ASSERT_EQ(rr.next()->pid(), 1);
+	ASSERT_EQ(rr.next()->pid(), 1);
+    }
+
+    // add, call next and remove 3 (empty);
+    {
+	using namespace LZ;
+	RoundRobin rr;
+	Process p1(1, 10, 2);
+	Process p2(2, 110, 2);
+	Process p3(3, 1110, 2);
+	rr.add(&p1);
+	rr.add(&p2);
+	rr.add(&p3);
+
+	ASSERT_EQ(rr.next()->pid(), 1);
+	ASSERT_EQ(rr.next()->pid(), 2);
+	rr.removeCurrent();
+	ASSERT_EQ(rr.next()->pid(), 1);
+	rr.removeCurrent();
+	ASSERT_EQ(rr.next()->pid(), 1);
+	ASSERT_EQ(rr.next()->pid(), 1);
+	rr.removeCurrent();
+	ASSERT_EQ(rr.next(), NULL);
+    }
+
+    // add, next, remove interleave 1;
+    {
+	using namespace LZ;
+	RoundRobin rr;
+	Process p1(1, 10, 2);
+	Process p2(2, 110, 2);
+	Process p3(3, 1110, 2);
+	rr.add(&p1);
+	rr.add(&p2);
+
+	ASSERT_EQ(rr.next()->pid(), 1);
+	ASSERT_EQ(rr.next()->pid(), 2);
+
+	rr.add(&p3);
+	ASSERT_EQ(rr.next()->pid(), 1);
+	ASSERT_EQ(rr.next()->pid(), 2);
+	ASSERT_EQ(rr.next()->pid(), 3);
+    }
+
+    // add, next, remove interleave 2;
+    {
+	using namespace LZ;
+	RoundRobin rr;
+	Process p1(1, 10, 2);
+	Process p2(2, 110, 2);
+	Process p3(3, 1110, 2);
+	rr.add(&p1);
+	rr.add(&p2);
+
+	ASSERT_EQ(rr.next()->pid(), 1);
+	rr.add(&p3);
+
+	ASSERT_EQ(rr.next()->pid(), 2);
+	ASSERT_EQ(rr.next()->pid(), 3);
+    }
+
+    // add, next, remove interleave 3;
+    {
+	using namespace LZ;
+	RoundRobin rr;
+	Process p1(1, 10, 2);
+	Process p2(2, 110, 2);
+	Process p3(3, 1110, 2);
+	rr.add(&p1);
+	rr.add(&p2);
+
+	ASSERT_EQ(rr.next()->pid(), 1);
+	rr.add(&p3);
+	rr.removeCurrent();
+	ASSERT_EQ(rr.next()->pid(), 3);
+    }
+
+    // add, next, remove interleave 4;
+    {
+	using namespace LZ;
+	RoundRobin rr;
+	Process p1(1, 10, 2);
+	Process p2(2, 110, 2);
+	Process p3(3, 1110, 2);
+	rr.add(&p1);
+	rr.add(&p2);
+
+	ASSERT_EQ(rr.next()->pid(), 1);
+	ASSERT_EQ(rr.next()->pid(), 2);
+	ASSERT_EQ(rr.next()->pid(), 1);
+	rr.removeCurrent();
+	DBG(rr.next()->pid());
+	ASSERT_EQ(rr.next()->pid(), 2);
+	ASSERT_EQ(rr.next()->pid(), 2);
+	ASSERT_EQ(rr.next()->pid(), 2);
+
+	//ASSERT_EQ(rr.next()->pid(), 1);
+	//ASSERT_EQ(rr.next()->pid(), 2);
+	//rr.add(&p3);
+	//ASSERT_EQ(rr.next()->pid(), 3);
+    }
+
     return 0;
 }

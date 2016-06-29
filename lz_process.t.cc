@@ -34,6 +34,7 @@ int main()
     bool ret2 = p2.run(&rtm2, 15);
     ASSERT_EQ(5, rtm2);
     ASSERT_EQ(true, ret2);
+    ASSERT_EQ(0, p2.duration());
     //ASSERT_DEATH({ int a[]= {1,2}; a[3]; }, "nonon");
     //ASSERT_EQ(1, 1);
     //ASSERT_TRUE("123" == "1231");

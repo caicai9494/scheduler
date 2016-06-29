@@ -1,6 +1,8 @@
 #ifndef LZ_PROCESS_H 
 #define LZ_PROCESS_H
 
+#include <iostream>
+
 namespace LZ {
 
 class Process {
@@ -16,8 +18,9 @@ class Process {
     unsigned startTime() const { return d_startTime; }
 
     bool run(unsigned *runtime, unsigned quantum);
-        // Set actual running time and return whether
-	// the process is ended
+        // Given 'quantum' and set 'runtime' to actual running time 
+	// Return whether the process has ended
+    friend std::ostream& operator<< (std::ostream& stream, const Process& prc);
 
   private:
     unsigned d_pid;
@@ -25,6 +28,13 @@ class Process {
     unsigned d_startTime;
 
 };
+
+inline
+std::ostream& operator<< (std::ostream& stream, const Process& prc)
+{
+    stream << "pid: " << prc.pid() << '\n';
+    stream << "duration: " << prc.duration() << '\n';
+}
 
 } // close namespace
 

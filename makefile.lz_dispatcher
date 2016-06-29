@@ -4,7 +4,7 @@ LIBS=
 LIBS_INC=.
 
 TSK=lz_dispatcher.tsk
-SRC=lz_process.cc lz_dispatcher.cc lz_dispatcher.t.cc
+SRC=lz_process.cc lz_roundrobin.cc lz_dispatcher.cc lz_dispatcher.t.cc
 
 PTHREAD_ENABLED=#-pthread
 

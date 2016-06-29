@@ -17,22 +17,14 @@ class RoundRobin : public IScheduler {
     RoundRobin();
 
     void add(Process *prc) override;
-
-    bool run(unsigned *runtime, unsigned quantum) override;
-
     bool empty() const override;
-
-    PListIt getNext();
-    void removeCurrent();
+    Process* next() override;
+    void removeCurrent() override;
 
   private:
 
     PList d_activeList;
     PListIt d_it;
-
-
-
-
 };
 
 inline
